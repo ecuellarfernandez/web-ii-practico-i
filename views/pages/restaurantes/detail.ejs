@@ -1,0 +1,46 @@
+<%- include('../../partials/header.ejs') %>
+
+<div class="container my-5">
+    <div class="text-center">
+        <img src="/uploads/<%= restaurante.logo %>" class="img-fluid" style="max-height: 200px;" />
+        <h1 class="mt-3 fw-bold text-uppercase"><%= restaurante.nombre %></h1>
+    </div>
+
+    <h3 class="mt-5 mb-3">Hamburguesas disponibles</h3>
+
+    <div class="row">
+        <% restaurante.hamburguesas.forEach(hamb => { %>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="/uploads/<%= hamb.imagen %>" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                <div class="card-body">
+                    <h5 class="card-title fw-bold"><%= hamb.nombre %></h5>
+                    <p class="card-text"><%= hamb.descripcion %></p>
+                    <p><strong>Precio:</strong> Bs <%= hamb.precio %></p>
+
+                    <form method="post" action="/hamburguesas/<%= hamb.id %>/calificar">
+                        <div class="mb-2">
+                            <label for="puntuacion-<%= hamb.id %>">Puntuación (1 a 5):</label>
+                            <input type="number" name="puntuacion" min="1" max="5" class="form-control" required />
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="comentario-<%= hamb.id %>">Comentario:</label>
+                            <textarea name="comentario" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <input type="checkbox" class="form-check-input" name="probado" id="probado-<%= hamb.id %>" />
+                            <label class="form-check-label" for="probado-<%= hamb.id %>">Ya la probé</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-sm btn-success">Enviar calificación</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<%- include('../../partials/footer.ejs') %>

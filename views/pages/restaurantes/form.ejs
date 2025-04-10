@@ -1,0 +1,62 @@
+<%- include('../../partials/header.ejs') %>
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3>Formulario de restaurante</h3>
+                    </div>
+
+                    <form method="post" action="/restaurantes/<%= editar ? restaurante.id + '/edit' : 'create' %>" enctype="multipart/form-data">
+                    <% if (errors) { %>
+                            <div class="alert alert-warning">
+                                <%= errors.message %>
+                            </div>
+                        <% } %>
+
+                        <div class="mt-2">
+                            <label for="nombre" class="form-label">Nombre del restaurante</label>
+                            <input
+                                    type="text"
+                                    id="nombre"
+                                    name="nombre"
+                                    class="form-control"
+                                    placeholder="Ej: Burger House"
+                                    value="<%= restaurante?.nombre || '' %>"
+                            />
+                        </div>
+                            <% if (errors?.nombre) { %>
+                                <div class="text-danger mt-1">
+                                    <%- errors.nombre %>
+                                </div>
+                            <% } %>
+
+                        <% if (!editar) { %>
+                            <div class="mt-3">
+                                <label for="logo" class="form-label">Seleccione el logo del restaurante</label>
+                                <input
+                                        type="file"
+                                        name="logo"
+                                        class="form-control"
+                                        id="logo"
+                                        accept="image/*"
+                                />
+                                <% if (errors?.logo) { %>
+                                    <div class="text-danger mt-1"><%- errors.logo %></div>
+                                <% } %>
+                            </div>
+                        <% } %>
+
+                        <div class="mt-3">
+                            <input type="submit" value="<%= editar ? 'Guardar restaurante' : 'Crear restaurante' %>" class="btn btn-primary" />
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../../partials/footer.ejs') %>
