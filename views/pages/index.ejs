@@ -22,10 +22,33 @@
 </section>
 
 <!-- Sección de restaurantes -->
-<div class="text-center bg-light mt-5">
-    <p class="text-uppercase text-warning rounded p-2 px-3 fw-semibold d-inline">Always Tasty Burger</p>
-    <h2 class="display-5 fw-bold text-dark mb-4 mt-3">Choose & Enjoy</h2>
+<div class="text-center mt-5">
+    <p class="text-uppercase text-warning rounded p-2 px-3 fw-semibold d-inline">Los mejores</p>
+    <h2 class="display-5 fw-bold text-dark mb-3 mt-3">Restaurantes</h2>
 </div>
 <%- include('./restaurantes/list.ejs', {restaurantes, mostrarControles: false}) %>
+
+<!-- Sección de hamburguesas -->
+<section class="py-5">
+    <div class="container text-center ">
+        <p class="text-uppercase text-warning rounded p-2 px-3 fw-semibold d-inline">Una obra de arte llamada</p>
+        <h2 class="fw-bold mb-3 display-5">Hamburguesa</h2>
+
+        <div class="row justify-content-center">
+            <% hamburguesas.forEach(h => { %>
+                <div class="col-sm-6 col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm text-center">
+                        <a href="/hamburguesas/<%= h.id %>" class="text-decoration-none text-dark">
+                            <img src="/uploads/<%= h.imagen %>" class="card-img-top" style="height: 220px; object-fit: cover;" alt="<%= h.nombre %>"/>
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-uppercase"><%= h.nombre %></h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
 
 <%- include('../partials/footer.ejs') %>
