@@ -1,0 +1,47 @@
+<%- include('../../partials/header.ejs') %>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Lista de hamburguesas</h2>
+        <a href="/hamburguesas/create" class="btn btn-success">+ Nueva hamburguesa</a>
+    </div>
+
+    <% if (hamburguesas.length === 0) { %>
+        <div class="alert alert-info">No hay hamburguesas registradas aún.</div>
+    <% } else { %>
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Restaurante</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% hamburguesas.forEach(h => { %>
+                    <tr>
+                        <td><img src="/uploads/<%= h.imagen %>" alt="" style="height: 60px; object-fit: cover;" /></td>
+                        <td><%= h.nombre %></td>
+                        <td><%= h.descripcion %></td>
+                        <td>Bs <%= h.precio %></td>
+                        <td><%= h.restaurante?.nombre %></td>
+                        <td>
+                            <a href="/hamburguesas/<%= h.id %>" class="btn btn-sm btn-primary">Ver detalle</a>
+                            <a href="/hamburguesas/<%= h.id %>/edit" class="btn btn-sm btn-warning">Editar</a>
+                            <form method="POST" action="/hamburguesas/<%= h.id %>?_method=DELETE" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</div>
+
+<%- include('../../partials/footer.ejs') %>

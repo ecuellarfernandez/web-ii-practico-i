@@ -1,0 +1,33 @@
+<div class="col-md-4 mb-4">
+    <div class="card h-100 text-center shadow-sm border-0">
+        <img src="/uploads/<%= restaurante.logo %>" class="card-img-top p-4" style="height: 300px; object-fit: contain;" alt="<%= restaurante.nombre %>">
+
+        <div class="card-body">
+            <h5 class="card-title text-uppercase fw-bold"><%= restaurante.nombre %></h5>
+
+            <div class="row justify-content-center">
+                <% if (restaurante.hamburguesas && restaurante.hamburguesas.length > 0) { %>
+                    <% restaurante.hamburguesas.slice(0, 3).forEach(hamb => { %>
+                        <div class="col-4 mb-2">
+                            <a href="/hamburguesas/<%= hamb.id %>" title="Ver detalle de <%= hamb.nombre %>">
+                                <img src="/uploads/<%= hamb.imagen %>" class="img-fluid rounded" style="height: 60px; object-fit: cover;" title="<%= hamb.nombre %>">
+                            </a>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-muted">No hay hamburguesas.</p>
+                <% } %>
+            </div>
+            <!-- BOTONES PARA ADMIN -->
+            <% if (mostrarControles) { %>
+                <a href="/restaurantes/<%= restaurante.id %>" class="btn btn-sm btn-primary mt-2">Ver detalle</a>
+                <a href="/restaurantes/<%= restaurante.id %>/edit" class="btn btn-sm btn-warning mt-2">Editar</a>
+                <form method="post" action="/restaurantes/delete/<%= restaurante.id %>" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger mt-2">Eliminar</button>
+                </form>
+            <% } else { %>
+                <a href="/restaurantes/<%= restaurante.id %>" class="btn btn-sm btn-danger mt-2">Saber más</a>
+            <% } %>
+        </div>
+    </div>
+</div>

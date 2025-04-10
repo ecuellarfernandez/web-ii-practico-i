@@ -1,0 +1,31 @@
+<%- include('../partials/header.ejs') %>
+
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <!-- Texto -->
+            <div class="col-md-6">
+                <p class="hero-subtitle text-uppercase fw-medium p-2">
+                    It's a good time for the great taste of burgers
+                </p>
+                <h1 class="display-1 fw-bolder text-dark text-uppercase">
+                    Burger <span class="text-danger">Week</span>
+                </h1>
+            </div>
+
+            <!-- Imagen -->
+            <div class="col-md-6 text-center">
+                <img src="/img/burger.png" alt="Burger Combo" class="img-fluid" style="max-height: 500px;" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de restaurantes -->
+<div class="text-center bg-light mt-5">
+    <p class="text-uppercase text-warning rounded p-2 px-3 fw-semibold d-inline">Always Tasty Burger</p>
+    <h2 class="display-5 fw-bold text-dark mb-4 mt-3">Choose & Enjoy</h2>
+</div>
+<%- include('./restaurantes/list.ejs', {restaurantes, mostrarControles: false}) %>
+
+<%- include('../partials/footer.ejs') %>
