@@ -53,13 +53,12 @@ exports.listPage = async (req, res) => {
 };
 
 exports.postCalificacion = async (req, res) => {
-    const { puntuacion, comentario, probado } = req.body;
+    const { puntuacion, probado } = req.body;
     const hamburguesaId = req.params.id;
 
     try {
         await db.calificacion.create({
             puntuacion: parseInt(puntuacion),
-            comentario,
             probado: probado === 'on',
             hamburguesaId
         });
