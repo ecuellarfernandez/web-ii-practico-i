@@ -1,6 +1,6 @@
-const controller = require("../controllers/restaurante.controller");
+const controller = require("../controllers/home.controller");
 module.exports = app =>{
     let router = require('express').Router();
-    router.get('/', controller.getRestauranteList);
+    router.get('/', controller.getHome);
     app.use('', router);
 }
