@@ -1,5 +1,6 @@
 const path = require('path');
 const db = require('../models/index');
+const fs = require('fs');
 
 exports.getRestauranteList = async (req, res) => {
     try {
@@ -53,7 +54,7 @@ exports.postRestauranteCreate = async (req, res) => {
                 });
             }
 
-            res.redirect('/');
+            res.redirect('/restaurantes/page');
         });
 
     } catch (error) {
@@ -118,7 +119,16 @@ exports.postRestauranteEdit = async (req, res) => {
 };
 
 exports.deleteRestaurante = async (req, res) => {
-    await db.restaurante.destroy({ where: { id: req.params.id } });
+    const restaurante = await db.restaurante.findByPk(req.params.id);
+    if (!restaurante) return res.status(404).send('Restaurante no encontrado');
+
+    // Eliminar el logo del servidor
+    const logoPath = path.join(__dirname, '../public/uploads', restaurante.logo);
+    fs.unlink(logoPath, (err) => {
+        if (err) console.error('Error al eliminar el logo:', err);
+    });
+
+    await restaurante.destroy();
     res.redirect('/restaurantes/page');
 };
 

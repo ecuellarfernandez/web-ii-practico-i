@@ -1,12 +1,55 @@
 const db = require('../models');
 const path = require('path');
+const fs = require('fs');
+const calcularPromedio = require('../utils/calcularPromedio');
+const contarProbadas = require('../utils/contarProbadas');
+
+exports.deleteHamburguesa = async (req, res) => {
+    const hamburguesa = await db.hamburguesa.findByPk(req.params.id);
+    if (!hamburguesa) return res.status(404).send('Hamburguesa no encontrada');
+
+    // Eliminar la imagen del servidor
+    const imagePath = path.join(__dirname, '../public/uploads', hamburguesa.imagen);
+    fs.unlink(imagePath, (err) => {
+        if (err) console.error('Error al eliminar la imagen:', err);
+    });
+
+    await hamburguesa.destroy();
+    res.redirect('/hamburguesas/page');
+}
+
+exports.getDetail = async (req, res) => {
+    const hamburguesa = await db.hamburguesa.findByPk(req.params.id, {
+        include: ['restaurante', 'calificaciones']
+    });
+
+    if (!hamburguesa) return res.status(404).send('Hamburguesa no encontrada');
+
+    const promedio = calcularPromedio(hamburguesa.calificaciones);
+    const probadas = contarProbadas(hamburguesa.calificaciones);
+
+    res.render('pages/hamburguesas/detail.ejs', {
+        hamburguesa,
+        promedio,
+        probadas
+    });
+};
 
 exports.listPage = async (req, res) => {
     const hamburguesas = await db.hamburguesa.findAll({
-        include: ['restaurante']
+        include: ['restaurante', 'calificaciones']
     });
 
-    res.render('pages/hamburguesas/listPage.ejs', { hamburguesas });
+    // Calcular el promedio para cada hamburguesa
+    const hamburguesasConPromedio = hamburguesas.map(h => {
+        const plain = h.get({ plain: true });
+        return {
+            ...plain,
+            promedio: calcularPromedio(plain.calificaciones) || 'Sin calificaciones'
+        };
+    });
+
+    res.render('pages/hamburguesas/listPage.ejs', { hamburguesas: hamburguesasConPromedio });
 };
 
 exports.postCalificacion = async (req, res) => {
@@ -21,8 +64,7 @@ exports.postCalificacion = async (req, res) => {
             hamburguesaId
         });
 
-        const hamburguesa = await db.hamburguesa.findByPk(hamburguesaId);
-        res.redirect('/restaurantes/' + hamburguesa.restauranteId);
+        res.redirect('/hamburguesas/' + hamburguesaId);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al guardar la calificación');
@@ -76,7 +118,7 @@ exports.postCreate = async (req, res) => {
             console.error(err);
             res.status(500).send('Error al subir imagen');
         } else {
-            res.redirect('/restaurantes/page');
+            res.redirect('/hamburguesas/page');
         }
     });
 };
@@ -117,10 +159,5 @@ exports.postEdit = async (req, res) => {
     hamburguesa.restauranteId = restauranteId;
     await hamburguesa.save();
 
-    res.redirect('/restaurantes/page');
-};
-
-exports.deleteHamburguesa = async (req, res) => {
-    await db.hamburguesa.destroy({ where: { id: req.params.id } });
-    res.redirect('/restaurantes/page');
+    res.redirect('/hamburguesas/page');
 };
