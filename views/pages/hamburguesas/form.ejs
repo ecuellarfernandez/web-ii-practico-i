@@ -42,7 +42,9 @@
                             <label>Restaurante:</label>
                             <select name="restauranteId" class="form-control">
                                 <% restaurantes.forEach(r => { %>
-                                    <option value="<%= r.id %>" <%= r.id == hamburguesa.restauranteId ? 'selected' : '' %>><%= r.nombre %></option>
+                                    <option value="<%= r.id %>" <%= r.id == hamburguesa.restauranteId ? 'selected' : '' %>>
+                                        <%= r.nombre %>
+                                    </option>
                                 <% }) %>
                             </select>
                             <% if (errors?.restauranteId) { %><small class="text-danger"><%= errors.restauranteId %></small><% } %>
