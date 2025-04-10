@@ -23,10 +23,8 @@ db.sequelize.sync({
     console.log("db resync");
 });
 
-
 require("./routes")(app);
 
-
 app.listen(port, () => {
-    console.log(`App running on ${port}`);
+    console.log(`App running on http://localhost:${port}`);
 });

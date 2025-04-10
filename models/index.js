@@ -1,9 +1,10 @@
-const { sequelize } = require('../config/db.config');
-const calificacion = require('./Calificacion')(sequelize);
-const hamburguesa = require('./Hamburguesa')(sequelize);
-const restaurante = require('./Restaurante')(sequelize);
+const {sequelize} = require('../config/db.config');
 
-// Relacion hamburguesa (1) - calificacion (N)
+const calificacion = require('./calificacion')(sequelize);
+const hamburguesa = require('./hamburguesa')(sequelize);
+const restaurante = require('./restaurante')(sequelize);
+
+// Relación hamburguesa (1) - calificación (N)
 hamburguesa.hasMany(calificacion, {
     foreignKey: 'hamburguesaId',
     sourceKey: 'id',
@@ -16,7 +17,7 @@ calificacion.belongsTo(hamburguesa, {
     as: 'hamburguesa',
 });
 
-//Relacion restaurante (1) - hamburguesa (N)
+// Relación restaurante (1) - hamburguesa (N)
 restaurante.hasMany(hamburguesa, {
     foreignKey: 'restauranteId',
     sourceKey: 'id',
@@ -32,5 +33,6 @@ hamburguesa.belongsTo(restaurante, {
 module.exports = {
     calificacion,
     hamburguesa,
-    restaurante
+    restaurante,
+    sequelize,
 };
