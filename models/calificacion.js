@@ -10,8 +10,8 @@ module.exports = (sequelize) => {
                 max: 5,
             },
         },
-        comentario: {
-            type: DataTypes.STRING,
+        probado: {
+            type: DataTypes.BOOLEAN,
         },
     });
 
