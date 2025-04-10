@@ -1,0 +1,53 @@
+<%- include('../../partials/header.ejs') %>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="/uploads/<%= hamburguesa.imagen %>" class="img-fluid rounded" />
+        </div>
+        <div class="col-md-7">
+            <h1 class="fw-bold text-uppercase"><%= hamburguesa.nombre %></h1>
+            <h5 class="text-muted mb-2">Restaurante: <%= hamburguesa.restaurante.nombre %></h5>
+            <p><%= hamburguesa.descripcion %></p>
+            <h4 class="text-danger">Bs <%= hamburguesa.precio %></h4>
+
+            <% if (promedio) { %>
+                <p class="mt-2">⭐ Promedio: <strong><%= promedio %></strong></p>
+                <p>✅ Probada por <%= probadas %> persona(s)</p>
+            <% } else { %>
+                <p class="text-muted">Sin calificaciones aún</p>
+            <% } %>
+
+            <hr />
+            <h5>Calificá esta hamburguesa 🍔</h5>
+            <form action="/hamburguesas/<%= hamburguesa.id %>/calificar" method="POST">
+                <div class="mb-2">
+                    <label>Puntuación (1-5):</label>
+                    <input type="number" name="puntuacion" class="form-control" min="1" max="5" required />
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" name="probado" id="probado" />
+                    <label class="form-check-label" for="probado">Ya la probé</label>
+                </div>
+
+                <button type="submit" class="btn btn-success">Enviar calificación</button>
+            </form>
+        </div>
+    </div>
+
+    <% if (hamburguesa.calificaciones.length > 0) { %>
+        <hr />
+        <h4 class="mt-5">Opiniones recientes</h4>
+        <ul class="list-group mt-3">
+            <% hamburguesa.calificaciones.slice().reverse().forEach(c => { %>
+                <li class="list-group-item">
+                    <strong><%= c.puntuacion %> ⭐</strong> -
+                    <% if (c.probado) { %><span class="badge bg-success ms-2">Probada</span><% } else { %><span class="badge bg-secondary ms-2">No probada</span><% } %>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</div>
+
+<%- include('../../partials/footer.ejs') %>
